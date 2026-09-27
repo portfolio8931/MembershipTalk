@@ -1,0 +1,24 @@
+{
+  "name": "my-ejs-scss-jquery-project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "sass src/styles.scss public/styles.css --no-source-map",
+    "start": "nodemon"
+  },
+  "dependencies": {
+    "connect-livereload": "^0.6.1",
+    "ejs": "^3.1.10",
+    "express": "^4.21.0",
+    "jquery": "^3.7.1",
+    "livereload": "^0.9.3",
+    "yarn": "^1.22.22"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1",
+    "nodemo": "^1.0.0",
+    "nodemon": "^3.1.7",
+    "sass": "^1.79.4"
+  }
+}

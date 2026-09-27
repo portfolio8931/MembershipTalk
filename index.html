@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <link rel="stylesheet" href="./styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <title>membership talk</title>
+</head>
+<body>
+  <main>
+    <div class="p-main__Wrapper">
+      <div class="p-main__ttl">
+        <h1>サントスメンバーシップ雑談</h1>
+      </div>
+      <div class="p-main__innner">
+        <div class="p-main__itemWrapper">
+          <div class="p-main__Input">
+            <input type="file" id="csvFile" accept=".csv" />
+            <button onclick="loadCSV()">読み込み</button>
+          </div>
+          <div class="p-main__contents" id="result">
+            <ul class="p-main__listTtl">
+              <li>質問内容</li>
+              <li>切り抜きOK？</li>
+            </ul>
+            <ul class="p-main__contentsList">
+            </ul>
+            <button class="slick-prev" type="button"></button>
+            <button class="slick-next" type="button"></button>
+          </div>
+          <div class="p-main__count">
+            <p class="p-main__countNum"></p>
+            <p class="p-main__countItem"></p>
+          </div>
+        </div>
+        <img class="p-main__santos" src="./img/ch.gif">
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function escapeHTML(str = "") {
+      return String(str).replace(/[&<>"']/g, m => ({
+        '&':'&amp;',
+        '<':'&lt;',
+        '>':'&gt;',
+        '"':'&quot;',
+        "'":'&#39;'
+      })[m]);
+    }
+
+    const list = document.querySelector('.p-main__contentsList');
+    const prevBtn = document.querySelector('.slick-prev');
+    const nextBtn = document.querySelector('.slick-next');
+
+    let current = 0;
+    let items = [];
+
+    function render() {
+      items.forEach((li, i) => {
+        li.classList.toggle('is-active', i === current);
+      });
+
+      document.querySelector('.p-main__countNum').textContent = current + 1;
+    }
+
+    function initSlider() {
+      items = Array.from(list.children);
+      current = 0;
+
+      items.forEach(li => li.classList.remove('is-active'));
+      if (items[0]) items[0].classList.add('is-active');
+
+      render();
+    }
+
+    prevBtn.addEventListener('click', () => {
+      if (current > 0) {
+        current--;
+        render();
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (current < items.length - 1) {
+        current++;
+        render();
+      }
+    });
+
+    function loadCSV(){
+      const fileInput = document.getElementById('csvFile');
+      const file = fileInput.files[0];
+
+      if (!file){
+        alert('CSVファイルを選択してください');
+        return;
+      }
+
+      Papa.parse(file, {
+        encoding: "UTF-8",
+        complete: function(results) {
+          const rows = results.data.slice(2).filter(row => row.length && row.some(cell => cell !== ""));
+          let html = '';
+
+          rows.forEach(row => {
+            const textbox = (row[1] || "").replace(/\n/g, "<br>");
+            const judge = row[2] || "";
+
+            html += `
+              <li class="p-main__listItem">
+                <p class="p-main__textbox">${textbox}</p>
+                <p class="p-main__judge">${escapeHTML(judge)}</p>
+              </li>
+            `;
+          });
+
+          list.innerHTML = html;
+
+          initSlider();
+
+          document.querySelector('.p-main__countItem').textContent = rows.length;
+        },
+        error: function(err) {
+          console.error('PapaParse error:', err);
+          alert('CSV読み込み中にエラーが発生しました');
+        }
+      });
+    }
+  </script>
+</body>
+</html>
