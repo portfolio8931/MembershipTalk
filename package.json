@@ -4,8 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "sass src/styles.scss public/styles.css --no-source-map",
-    "start": "nodemon"
+    "build:sass": "sass --watch src/styles.scss:styles.css --no-source-map",
+    "start": "concurrently \"yarn build:sass\" \"node server.js\""
   },
   "dependencies": {
     "connect-livereload": "^0.6.1",

@@ -14,7 +14,7 @@
       <div class="p-main__ttl">
         <h1>サントスメンバーシップ雑談</h1>
       </div>
-      <div class="p-main__innner">
+      <div class="p-main__inner">
         <div class="p-main__itemWrapper">
           <div class="p-main__Input">
             <input type="file" id="csvFile" accept=".csv" />
@@ -23,7 +23,7 @@
           <div class="p-main__contents" id="result">
             <ul class="p-main__listTtl">
               <li>質問内容</li>
-              <li>切り抜きOK？</li>
+              <li>条件</li>
             </ul>
             <ul class="p-main__contentsList">
             </ul>
@@ -107,12 +107,18 @@
 
           rows.forEach(row => {
             const textbox = (row[1] || "").replace(/\n/g, "<br>");
-            const judge = row[2] || "";
+            const clip = row[2] || "";
+            const advice = row[3] || "";
 
             html += `
               <li class="p-main__listItem">
                 <p class="p-main__textbox">${textbox}</p>
-                <p class="p-main__judge">${escapeHTML(judge)}</p>
+                <div class="p-main__judgeContainer">
+                  <p class="p-main__judgeTtl">切り抜き</p>
+                  <p class="p-main__clip">${escapeHTML(clip)}</p>
+                  <p class="p-main__judgeTtl">アドバイス</p>
+                  <p class="p-main__advice">${escapeHTML(advice)}</p>
+                </div>
               </li>
             `;
           });

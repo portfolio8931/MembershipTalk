@@ -30,7 +30,7 @@ html, body, main {
     }
   }
 
-  .p-main__innner{
+  .p-main__inner{
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
@@ -105,11 +105,32 @@ html, body, main {
               line-height: 1.5;
             }
 
-            .p-main__judge{
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              border-left: 3px solid $main_color;
+            .p-main__judgeContainer{
+              display: grid;
+              grid-template-rows: 1fr 4fr 1fr 4fr;
+
+              .p-main__judgeTtl{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-weight: bold;
+                font-size: clamp(8px, 1.1vw, 28px);
+                color: $Nmain_color;
+                background-color: $sub_color;
+                border-left: 2px solid $main_color;
+              }
+
+              .p-main__clip,
+              .p-main__advice{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-left: 3px solid $main_color;
+              }
+
+              .p-main__clip{
+                border-bottom: 3px solid $main_color;
+              }
             }
           }
         }

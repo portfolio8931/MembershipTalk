@@ -6,9 +6,9 @@ const app = express();
 
 // LiveReloadサーバーの設定
 const liveReloadServer = livereload.createServer();
-liveReloadServer.watch(path.join(__dirname, 'public'));
+liveReloadServer.watch(__dirname);
 
-// ファイルが変更された際に、ブラウザにリロードを促す
+// ファイル変更でリロード
 liveReloadServer.server.once('connection', () => {
   setTimeout(() => {
     liveReloadServer.refresh('/');
@@ -18,16 +18,11 @@ liveReloadServer.server.once('connection', () => {
 // connect-livereload ミドルウェアの設定
 app.use(connectLiveReload());
 
-// EJSの設定
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'src', 'views'));
-
-// 公開フォルダの設定
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname));
 
 // ルート
 app.get('/', (req, res) => {
-  res.render('index');
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // サーバーを起動
